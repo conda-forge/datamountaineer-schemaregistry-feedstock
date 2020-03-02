@@ -7,7 +7,7 @@ source:
   git_rev: 3a55967d29524f406548f2afa844f92f18d12a7d
 
 build:
-  number: 0
+  number: 1000
   script: python setup.py install --single-version-externally-managed --record record.txt
   skip: True  # [py2k]
 
