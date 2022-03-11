@@ -1,44 +1,51 @@
+{% set name = "datamountaineer-schemaregistry" %}
+{% set version = "0.3" %}
+
+
 package:
-  name: datamountaineer-schemaregistry
-  version: "0.2"
+  name: {{ name|lower }}
+  version: {{ version }}
 
 source:
-  git_url: https://github.com/datamountaineer/python-serializers.git
-  git_rev: 3a55967d29524f406548f2afa844f92f18d12a7d
+  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/datamountaineer-schemaregistry-{{ version }}.tar.gz
+  sha256: 15ac3c28499322f3d68454f276d4b64745b835fddd78919f1210ff44f8d48345
 
 build:
   number: 0
-  script: python setup.py install --single-version-externally-managed --record record.txt
-  skip: True  # [py2k]
+  noarch: python
+  script: {{ PYTHON }} -m pip install . -vv
 
 requirements:
-  build:
-    - python
-    - setuptools
-    - fastavro
-    - python-avro
-
+  host:
+    - python >=3.6
+    - pip
   run:
-    - python
+    - python >=3.6
     - fastavro
     - python-avro
 
 test:
+  source_files:
+    - .
   requires:
     - mock
     - pytest
   commands:
-    - py.test {{ environ['SRC_DIR'] }}
+    - pytest
+    - pip check
   imports:
     - datamountaineer
     - datamountaineer.schemaregistry
     - datamountaineer.schemaregistry.tests
     - datamountaineer.schemaregistry.client
     - datamountaineer.schemaregistry.serializers
+  requires:
+    - pip
 
 about:
   home: https://github.com/datamountaineer/python-serializers
-  license: Apache 2.0
+  license: Apache-2.0
+  license_file: LICENSE
   summary: 'DataMountaineer Python 3.5 Confluent Schema Registry Client'
   license_family: Apache
 
